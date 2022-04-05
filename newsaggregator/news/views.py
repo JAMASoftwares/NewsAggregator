@@ -73,3 +73,4 @@ for element in bi_news_elements:
 
 def index(req):
     return render(req, 'news/index.html', {'prog_news':prog_news_list, 'bi_news': bi_news_list})
+    
