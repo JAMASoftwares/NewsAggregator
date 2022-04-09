@@ -17,6 +17,7 @@ prog_news_elements = prog_dom.xpath("//div[contains(@class, 'td_module_mx')]")
 prog_news_list = []
 
 for element in prog_news_elements:
+    prog_img = element.xpath('.//img/@src')[0]
     prog_link = element.xpath(".//div[contains(@class, 'td-module-thumb')]//a/@href")[0]
 
     response = requests.get(prog_link, headers=headers)
@@ -33,7 +34,8 @@ for element in prog_news_elements:
         'title': prog_title,
         'link': prog_link,
         'date': prog_publication_date,
-        'source': prog_source
+        'source': prog_source,
+        'img': prog_img
     }
 
     prog_news_list.append(prog_news)
@@ -49,6 +51,7 @@ bi_news_elements = bi_dom.xpath("//div[contains(@class, 'td_module_mx')]")
 bi_news_list = []
 
 for element in bi_news_elements:
+    bi_img = element.xpath('.//img/@src')[0]
     bi_link = element.xpath(".//div[contains(@class, 'td-module-thumb')]//a/@href")[0]
 
     response = requests.get(bi_link, headers=headers)
@@ -65,7 +68,8 @@ for element in bi_news_elements:
         'title': bi_title,
         'link': bi_link,
         'date': bi_publication_date,
-        'source': bi_source
+        'source': bi_source,
+        'img': bi_img
     }
 
     bi_news_list.append(bi_news)
