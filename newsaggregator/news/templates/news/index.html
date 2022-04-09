@@ -1,45 +1,43 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title></title>
+    <title>New Aggregator</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+
 <body>
     <div class="jumbotron">
-        <center><h1>News in IT sphere</h1>
-           <a href="/" class="btn btn-danger">Refresh News</a>
-        </form>
-    </center>
+        <center>
+            <h1>News in IT sphere</h1>
+            <a href="/" class="btn btn-danger">Refresh News</a>
+        </center>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-6">
-                    <h3 class="text-centre"> Programming News</h3>
-                    {% for object in prog_news %}
-                        <p>{{ object.title }}</p>
-                        <p class="card-text text-muted h6">{{ object.date }} | {{ object.source}}</p>
-                        <a href = "{{ object.link }}" target="_blank">Read full...</a>
-                    {% endfor %}
-                    <br>
+                <h3 class="text-centre">Programming News</h3>
+                {% for object in prog_news %}
+                <p>{{ object.title }}</p>
+                <p class="card-text text-muted h6">{{ object.date }} | {{ object.source}}</p>
+                <a href="{{ object.link }}" target="_blank">Read full...</a> {% endfor %}
+                <br>
             </div>
             <div class="col-6">
-                    <h3 class="text-centre">Business Intelligence News</h3>
-                    {% for object in bi_news %}
-                        <p>{{ object.title }}</p>
-                        <p class="card-text text-muted h6">{{ object.date }} | {{ object.source}}</p>
-                        <a href = "{{ object.link }}" target="_blank">Read full...</a>
-                    {% endfor %}
-                    <br>
+                <h3 class="text-centre">Business Intelligence News</h3>
+                {% for object in bi_news %}
+                <p>{{ object.title }}</p>
+                <p class="card-text text-muted h6">{{ object.date }} | {{ object.source}}</p>
+                <a href="{{ object.link }}" target="_blank">Read full...</a> {% endfor %}
+                <br>
             </div>
         </div>
- 
- 
-</div>
-    <script
-src="http://code.jquery.com/jquery-3.3.1.min.js"
-integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
+
+
+    </div>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
+
 </html>
