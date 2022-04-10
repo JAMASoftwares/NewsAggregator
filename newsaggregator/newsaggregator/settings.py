@@ -71,6 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'newsaggregator.wsgi.application'
+STATIC_ROOT = '/static/'
 
 
 # Database
