@@ -20,4 +20,9 @@ from news import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name = "home"),
+    path('categories/', views.categories, name="categories"),
+    path('bi/', views.bi, name="bi"),
+    path('prog/', views.prog, name="prog"),
+    path('robotics/', views.robotics, name="robotics"),
+    path('crypto/', views.crypto, name="crypto"),
 ]
