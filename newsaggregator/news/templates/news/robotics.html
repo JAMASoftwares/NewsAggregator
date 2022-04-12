@@ -1,0 +1,17 @@
+{% extends "news/base.html" %}
+
+{% block content %}
+<h3 class="text-centre">Robotics News</h3><br>
+<div class="row">
+    {% for object in robotics_news %}
+    <div class="col-6">
+            <img width="265" height="198" src="{{ object.img }}">
+            <p>{{ object.title }}</p>
+            <p class="card-text text-muted h6">{{ object.date }} | {{ object.source}}</p>
+            <a href = "{{ object.link }}" target="_blank">Read full...</a><br><hr>
+        
+    </div>
+    {% endfor %}
+</div>
+   
+{% endblock content %}  
