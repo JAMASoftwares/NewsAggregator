@@ -147,12 +147,19 @@ for element in crypto_news_elements:
 
 
 def index(req):
-    return render(req, 'news/index.html', {'prog_news':prog_news_list, 'bi_news': bi_news_list})
+    context = {'home': 'active',
+               'prog_news':prog_news_list, 
+               'bi_news': bi_news_list }
+    return render(req, 'news/index.html', context)
 
 
 def categories(req):
-    return render(req, 'news/categories.html')
+    context = {'categories': 'active'}
+    return render(req, 'news/categories.html', context)
 
+def about(req):
+    context = {'about': 'active'}
+    return render(req, 'news/about.html', context)
 
 def bi(req):
     return render(req, 'news/bi.html', {'bi_news': bi_news_list})
