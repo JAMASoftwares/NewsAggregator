@@ -1,23 +1,23 @@
-{% extends "news/base.html" %}
+{% extends "news/base.html" %} {% block content %}
 
-{% block content %}
-        
 <!-- Main -->
 <main>
     <!-- Welcome section -->
     <section class="tm-welcome">
         <div class="row">
             <div class="col-12">
-                <h2 class="tm-section-header tm-header-floating">Welcome to top tech news</h2>         
+                <h2 class="tm-section-header tm-header-floating">Welcome to top tech news</h2>
             </div>
         </div>
-        
+
         <div class="row tm-welcome-row">
-            {% for object in prog_news %}
+            {% for object in object_list %}
             <article class="col-lg-6 tm-media">
                 <img src="{{ object.img }}" alt="Welcome image" class="img-fluid tm-media-img" />
                 <div class="tm-media-body">
-                    <a href="#" class="tm-article-link"><h3 class="tm-article-title text-uppercase">{{ object.title }}</h3></a>
+                    <a href="#" class="tm-article-link">
+                        <h3 class="tm-article-title text-uppercase">{{ object.title }}</h3>
+                    </a>
                     <p>{{ object.date }} | {{ object.source}}</p>
                     <a href="{{ object.link }}" target="_blank">Read full...</a><br>
                 </div>
@@ -25,18 +25,18 @@
             {% endfor %}
         </div>
     </section>
-    
+
     <!-- Featured -->
     <section class="tm-featured">
         <div class="row">
             <div class="col-12">
-                <h2 class="tm-section-header tm-section-header-small">Current News</h2>        
+                <h2 class="tm-section-header tm-section-header-small">Current News</h2>
             </div>
         </div>
-        
+
         <!-- Carousel -->
         <div class="grid tm-carousel">
-            {% for object in bi_news %}
+            {% for object in object_list %}
             <figure class="effect-honey">
                 <img src="{{ object.img }}" alt="Featured Item">
                 <figcaption>
@@ -46,5 +46,5 @@
             {% endfor %}
         </div>
     </section>
-    
-{% endblock content %}         
+
+    {% endblock content %}
