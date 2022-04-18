@@ -1,53 +1,73 @@
+from unicodedata import category
 from django.shortcuts import render, redirect
 from lxml import html
 import requests
 import re
 from datetime import datetime
 from bs4 import BeautifulSoup as BSoup
-from news.models import Headline
+from news.models import Article
+from itertools import chain
 
 requests.packages.urllib3.disable_warnings()
 
-# Create your views here.
-
+# Global variables
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36'}
+cats = ['prog','bi','crypto','robotics']
 
+# This functions updates the whole database 
+# (not optimal, but we are not getting salary for this project)
 def scrape(req):
     session = requests.Session()
     session.headers = headers
-    # THIS MUST BE SOLVED DIFFERENTLY -> Used programming news for testing purposes only
-    url = "https://hub.packtpub.com/category/programming/" 
-    content = session.get(url, verify=False).content
-    soup = BSoup(content, "html.parser")
-    News = soup.find_all('div', {"class":"td_module_10"})[:6]
-    for article in News:
-        main = article.find_all('a')[0]
-        link = main['href']
+    # Empty database (Can be commented out)
+    Article.objects.all().delete()
+    # Urls and categories (key values are critical, any changes here will lead to several changes elsewhere and vise versa)
+    urls = {cats[0]:"https://hub.packtpub.com/category/programming/",
+            cats[1]:'https://hub.packtpub.com/category/data/business-intelligence/',
+            cats[2]:'https://hub.packtpub.com/category/security/cryptography/',
+            cats[3]:'https://hub.packtpub.com/category/iot-and-hardware/robotics/'}
+    
+    for src in urls.keys():
 
-        response = requests.get(link, headers=headers)
-        dom = html.fromstring(response.text)
+        content = session.get(urls[src], verify=False).content
+        soup = BSoup(content, "html.parser")
+        News = soup.find_all('div', {"class":"td_module_10"}) # <<-- Site specific class name
 
-        source = dom.xpath(".//div[@class='td-post-author-name']/a//text()")[0]
-        image_src = str(main.find('img')['src'])
-        title = main['title']
-        date = dom.xpath(".//header//span[@class='td-post-date']//time//text()")[0]
-        date = re.match("(.*) -.*", date).groups(1)
-        date = datetime.strptime(date[0], "%B %d, %Y").strftime('%d.%m.%Y')
+        for article in News:
+            main = article.find_all('a')[0]
+            link = main['href']
+            # Tools
+            response = requests.get(link, headers=headers)
+            dom = html.fromstring(response.text)
+            # Elements (Site specific)
+            source = dom.xpath(".//div[@class='td-post-author-name']/a//text()")[0]
+            image_src = str(main.find('img')['src'])
+            title = main['title']
+            # Get original styled date (Site specific)
+            date = dom.xpath(".//header//span[@class='td-post-date']//time//text()")[0]
+            date = re.match("(.*) -.*", date).groups(1)
+            date = datetime.strptime(date[0], "%B %d, %Y").strftime('%d.%m.%Y')
 
-        new_headline = Headline()
-        new_headline.title = title
-        new_headline.link = link
-        new_headline.img = image_src
-        new_headline.date = date
-        new_headline.source = source
-        new_headline.save()
+            new_article = Article()
+            new_article.title = title
+            new_article.link = link
+            new_article.img = image_src
+            new_article.date = date
+            new_article.source = source
+            new_article.category = src
+            new_article.save()
 
     return redirect("../")
 
 
 def index(req):
-    headlines = Headline.objects.all()[::-1]
-    context = {'object_list': headlines,
+    prog_news = Article.objects.filter(category=cats[0])[:2]
+    bi_news = Article.objects.filter(category=cats[1])[:2]
+    crypt_news = Article.objects.filter(category=cats[2])[:2]
+    robot_news = Article.objects.filter(category=cats[3])[:2]
+    articles = list(chain(prog_news, bi_news, crypt_news, robot_news))
+
+    context = {'object_list': articles,
                'home': 'active'}
     return render(req, "news/index.html", context)
 
@@ -59,20 +79,23 @@ def about(req):
     context = {'about': 'active'}
     return render(req, 'news/about.html', context)
 
-'''
+# Categoty views
 def bi(req):
-    return render(req, 'news/bi.html', {'bi_news': bi_news_list})
+    bi_news = Article.objects.filter(category=cats[1])
+    return render(req, 'news/bi.html', {'bi_news': bi_news})
 
 def prog(req):
-    prog_news_list = Headline.objects.all()[::-1]
-    return render(req, 'news/prog.html', {'object_list':prog_news_list})
+    prog_news = Article.objects.filter(category=cats[0])
+    return render(req, 'news/prog.html', {'prog_news':prog_news})
 
 def robotics(req):
-    return render(req, 'news/robotics.html', {'robotics_news': robotics_news_list})
+    robot_news = Article.objects.filter(category=cats[3])
+    return render(req, 'news/robotics.html', {'robotics_news': robot_news})
 
 def crypto(req):
-    return render(req, 'news/crypto.html', {'crypto_news': crypto_news_list})    
-'''
+    crypt_news = Article.objects.filter(category=cats[2])
+    return render(req, 'news/crypto.html', {'crypto_news': crypt_news})    
+
 
 '''
 # Programming News
