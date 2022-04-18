@@ -1,4 +1,3 @@
-from unicodedata import category
 from django.shortcuts import render, redirect
 from lxml import html
 import requests
@@ -16,7 +15,7 @@ cats = ['prog','bi','crypto','robotics']
 
 # This functions updates the whole database 
 # (not optimal, but we are not getting salary for this project)
-def scrape(req):
+def update(req):
     session = requests.Session()
     session.headers = headers
     # Empty database (Can be commented out)

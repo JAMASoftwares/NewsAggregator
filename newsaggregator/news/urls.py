@@ -1,6 +1,5 @@
 from django.urls import path
 from news import views
-from news.views import scrape
 
 
 urlpatterns = [
@@ -10,6 +9,6 @@ urlpatterns = [
     path('prog/', views.prog, name="prog"),
     path('robotics/', views.robotics, name="robotics"),
     path('crypto/', views.crypto, name="crypto"),
-    path('scrape/', scrape, name="scrape"),
+    path('update/', views.update, name="update"),
     path('', views.index, name="index")
 ]
