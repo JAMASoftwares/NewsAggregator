@@ -1,0 +1,16 @@
+{% extends "news/base.html" %}
+
+{% block content %}
+<h3 class="text-centre">Movies News</h3><br>
+<div class="row">
+    {% for object in movies_news %}
+    <div class="col-6">
+        <p>{{ object.title }}</p>
+        <p class="card-text text-muted h6">{{ object.date }} | {{ object.source}}</p>
+        <a href = "{{ object.link }}" target="_blank">Read full...</a><br><hr>
+        
+    </div>
+    {% endfor %}
+</div>
+   
+{% endblock content %}  
