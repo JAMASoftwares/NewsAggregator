@@ -1,3 +1,4 @@
+from distutils.log import error
 from django.shortcuts import render, redirect
 from lxml import html
 import requests
@@ -69,23 +70,27 @@ def update(req):
 
         for article in News:
             link = article.find('h3').find('a')['href']
+            print('Link: ' + link)
             # Tools
             response = requests.get(link, headers=headers)
             dom = html.fromstring(response.text)
             # Elements (Site specific)
-            source = dom.xpath("//a[@class='c-link  ']//text()")[0]
-            title = dom.xpath("//h1/text()")[0]
-            # Get original styled date (Site specific)
-            date = dom.xpath("//time[1]/text()")[0].replace('\n\t', '').replace('\n', '')
-            date = datetime.strptime(date, "%B %d, %Y %I:%M%p").strftime('%d.%m.%Y')
+            try:
+                source = dom.xpath("//a[@class='c-link  ']//text()")[0]
+                title = dom.xpath("//h1/text()")[0]
+                # Get original styled date (Site specific)
+                date = dom.xpath("//time[1]/text()")[0].replace('\n\t', '').replace('\n', '')
+                date = datetime.strptime(date, "%B %d, %Y %I:%M%p").strftime('%d.%m.%Y')
 
-            new_article = Article()
-            new_article.title = title
-            new_article.link = link
-            new_article.date = date
-            new_article.source = source
-            new_article.category = src
-            new_article.save()
+                new_article = Article()
+                new_article.title = title
+                new_article.link = link
+                new_article.date = date
+                new_article.source = source
+                new_article.category = src
+                new_article.save()
+            except:
+                print('Skipping article from source: ' + link)
 
     #Fashion
     for src in [list(urls.keys())[5]]: 
